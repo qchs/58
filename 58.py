@@ -1,7 +1,5 @@
 from bs4 import BeautifulSoup
-import requests,time,re
-
-first_url = 'http://bj.58.com/pbdn/0/pn4/'
+import requests,time,re,pymongo
 
 
 def GetSoup(url):
@@ -64,14 +62,26 @@ def Info(url):
         '区域':location,
         '浏览量':view
     }
-    print(data)
+    # print(data)
+    return data
+
+
+
+first_url = 'http://bj.58.com/pbdn/0/pn4/'
+
 
 urls = OnePageUrls(first_url)
+data=[]
 for url in urls:
-    print(url)
-    soup = GetSoup(url)
-    Info(url)
+    # print(url)
+    sort=Info(url)
+    data.append(sort)
     time.sleep(1)
 
+print(data)
 
+new = pymongo.MongoClient()
+datadb = new.wuba
+col = datadb.zhuanrang
 
+col.insert(data)
